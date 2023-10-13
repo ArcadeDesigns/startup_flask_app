@@ -1,3 +1,8 @@
+__author__ = "Ebire Folayemi Michael, ArcadeDesigns"
+__email__ = "folayemiebire@gmail.com"
+__status__ = "development"
+
+
 import os
 import subprocess
 import webbrowser
