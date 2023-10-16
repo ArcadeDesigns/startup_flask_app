@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-VERSION = '1.0.1'
+VERSION = '2.0.1'
 DESCRIPTION = 'Python Flask setup library'
 LONG_DESCRIPTION = 'A package that simplifies the creation of Python Flask applications with a pre-configured project structure.'
 
@@ -25,7 +25,7 @@ setup(
     ],
     entry_points={
         'console_scripts': [
-            'startup_flask_app = main:startup_flask_app'
+            'startup_flask_app = src.main:startup_flask_app'
         ]
     }
 )
