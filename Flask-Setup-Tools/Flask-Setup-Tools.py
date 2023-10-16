@@ -30,6 +30,7 @@ def rename_project(project_name):
     print(
         f"Project '{project_name}' has been renamed to '{new_project_name}'.")
 
+
 def create_flask_project():
     # Create the project directory
 
@@ -175,7 +176,7 @@ def create_flask_project():
 
     with open(os.path.join(template_path, "500.html"), "w") as server_error_file:
         server_error_file.write("<div>500 Error Code</div>")
-   
+
     with open(os.path.join(static_path, "css", "style.css"), "w") as css_file:
         css_file.write("""/* Add your CSS styles here */\n\n""")
 
@@ -184,6 +185,8 @@ def create_flask_project():
 
     with open(os.path.join(project_name, "app.py"), "w") as app_file:
         app_file.write("""from flask import Flask, render_template
+from models import Users
+from forms import UserForm
 
 app = Flask(__name__)
 
@@ -205,30 +208,118 @@ if __name__ == '__main__':
     """)
 
     with open(os.path.join(project_name, "forms.py"), "w") as forms_file:
-        forms_file.write("# Forms code goes here")
+        forms_file.write("""from flask_wtf import FlaskForm
+from wtforms import StringField, SubmitField, PasswordField, BooleanField, ValidationError, TextAreaField
+from wtforms.validators import DataRequired, EqualTo, Length
+from wtforms.widgets import TextArea
+from flask_ckeditor import CKEditorField
+from flask_wtf.file import FileField
+
+class UserForm(FlaskForm):
+    name = StringField(validators=[DataRequired()])
+    username = StringField(validators=[DataRequired()])
+    email = StringField(validators=[DataRequired()])
+    bio_summary = StringField()
+    location = StringField()
+    facebook_account = StringField()
+    twitter_account = StringField()
+    instagram_account = StringField()
+    password_hash = PasswordField(validators=[DataRequired(), EqualTo('password_hash2', message='Passwords Must Match!')])
+    password_hash2 = PasswordField(validators=[DataRequired()])
+    profile_pic = FileField()
+    submit = SubmitField()
+
+    """)
 
     with open(os.path.join(project_name, "models.py"), "w") as models_file:
-        models_file.write("# Models code goes here")
+        models_file.write("""from database import db
+from datetime import date, datetime
+from flask_login import UserMixin
+
+class Users(db.Model, UserMixin):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(), nullable=False)
+    username = db.Column(db.String(), nullable=False, unique=True)
+    email = db.Column(db.String(), nullable=False, unique=True)
+    bio_summary = db.Column(db.Text(), nullable=True)
+    profile_pic = db.Column(db.String(), nullable=True)
+    password_hash = db.Column(db.String())
+
+    location = db.Column(db.Text(), nullable=True)
+    facebook_account = db.Column(db.Text(), nullable=True)
+    twitter_account = db.Column(db.Text(), nullable=True)
+    instagram_account = db.Column(db.Text(), nullable=True)
+    
+    date_added = db.Column(db.DateTime, default=datetime.utcnow)
+
+    def formatted_date(self):
+        return self.date_added.strftime("%B %Y")
+
+    def formatted_date_with_day(self):
+        return self.date_added.strftime("%d %B %Y")
+
+    def formatted_time(self):
+        return self.date_added.strftime("%I:%M %p").lstrip('0')
+
+    def time_since_posted(self):
+        time_diff = datetime.now() - self.date_added
+        hours, remainder = divmod(time_diff.seconds, 3600)
+        minutes, seconds = divmod(remainder, 60)
+        if time_diff.days > 0:
+            return f"{time_diff.days} days ago"
+        elif hours > 0:
+            return f"{hours} hours ago"
+        elif minutes > 0:
+            return f"{minutes} minutes ago"
+        else:
+            return "just now"
+
+    @property
+    def password(self):
+        raise AttributeError(' Password Not A Readable Attribute !!! ')
+
+    @password.setter
+    def password(self, password):
+        self.password_hash = generate_password_hash(password)
+
+    def verify_password(self, password):
+        return check_password_hash(self.password_hash, password)
+
+    # create string
+    def __repr__(self):
+        return '<Name %r>' % self.name
+""")
 
     with open(os.path.join(project_name, "create_db.py"), "w") as create_db_file:
-        create_db_file.write("# Database creation code goes here")
+        create_db_file.write("""from app import app, db
+
+with app.app_context():
+    db.create_all()""")
+
+    with open(os.path.join(project_name, "database.py"), "w") as database_file:
+        database_file.write("""from flask_sqlalchemy import SQLAlchemy
+
+db = SQLAlchemy()
+
+
+""")
 
     # Create requirements.txt file for dependencies
     with open(os.path.join(project_name, "requirements.txt"), "w") as requirements_file:
-        requirements_file.write("Flask\n")
+        requirements_file.write("Flask\nalembic==1.10.2\ncertifi==2022.12.7\ncharset-normalizer==3.1.0\nclick==8.1.3\ncolorama==0.4.6\nFlask==2.2.3\nFlask-CKEditor==0.4.6\nFlask-Login==0.6.2\nFlask-Migrate==4.0.4\nFlask-SQLAlchemy==3.0.3\nFlask-WTF==1.1.1\ngreenlet==2.0.2\nidna==3.4\nimportlib-metadata==6.0.0\nitsdangerous==2.1.2\nJinja2==3.1.2\nMako==1.2.4\nMarkupSafe==2.1.2\npsycopg2-binary==2.9.5\nrequests==2.28.2\nSQLAlchemy==2.0.5.post1\ntyping-extensions==4.5.0\nurllib3==1.26.14\nWerkzeug==2.2.3\nWTForms==3.0.1\nzipp==3.14.0\n")
 
     print(
         f"Created Flask project '{project_name}' with the desired structure.")
-    
-    # Navigate to the project directory
-    os.chdir(project_name)
+
+    project_directory = os.path.abspath(project_name)
+    os.chdir(project_directory)
 
     # Provide instructions for setting up the virtual environment
     if create_venv == 'y':
         print(
             f"Virtual environment has been created. Activate it using 'source {project_name}/venv/bin/activate' on Linux/Unix, or 'venv\\Scripts\\activate' on Windows.")
-        
-         # Set the FLASK_APP environment variable to point to your application
+
+        # Set the FLASK_APP environment variable to point to your application
         os.environ['FLASK_APP'] = f"{project_name}/app.py"
 
         # Automatically activate the virtual environment (Windows and Unix compatible)
@@ -236,9 +327,10 @@ if __name__ == '__main__':
             venv_activate_cmd = os.path.join("venv", "Scripts", "activate")
         else:
             venv_activate_cmd = f"source venv/bin/activate"
-        
-        subprocess.Popen(venv_activate_cmd, shell=True)
-        
+
+        # Install packages from requirements.txt
+        subprocess.call(f"pip install -r requirements.txt", shell=True)
+
         # Menu for selecting Flask run port
         while True:
             print("Select a port to run Flask:")
@@ -276,7 +368,8 @@ if __name__ == '__main__':
         print(f"   flask run")
 
         # Automatically activate the virtual environment
-        venv_activate_cmd = os.path.join(project_name, "venv", "Scripts", "activate") if os.name == 'nt' else f"source {project_name}/venv/bin/activate"
+        venv_activate_cmd = os.path.join(
+            project_name, "venv", "Scripts", "activate") if os.name == 'nt' else f"source {project_name}/venv/bin/activate"
         subprocess.call(venv_activate_cmd, shell=True)
 
         # Set the FLASK_APP environment variable to point to your application
