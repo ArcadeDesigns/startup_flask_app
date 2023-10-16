@@ -376,11 +376,6 @@ if __name__ == '__main__':
 
     print(
         f"Created Flask project '{project_name}' with the desired structure.")
-
-if __name__ == '__main__':
-    project_name = input("Enter the project name: ")
-    startup_flask_app()
-    
     # Additional instructions
     print("Your project has been created. To set up and run your Flask project, please follow these steps:")
     print("1. Navigate to your created project folder.")
@@ -391,3 +386,6 @@ if __name__ == '__main__':
     print("   - cd <Project Name>")
     print("   - Start your venv")
     print("   - run 'python packages.py' to start the application")
+if __name__ == '__main__':
+    project_name = input("Enter the project name: ")
+    startup_flask_app()
