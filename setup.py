@@ -23,6 +23,9 @@ setup(
         "Operating System :: OS Independent",
         "License :: OSI Approved :: BSD License",
     ],
-    
-    entry_points={"console_scripts": ["startup_flask_app = src.main:main"]},
+    entry_points={
+        'console_scripts': [
+            'startup_flask_app = main:startup_flask_app'
+        ]
+    }
 )

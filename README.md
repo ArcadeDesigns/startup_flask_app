@@ -20,13 +20,19 @@
 
 To get started with `startup_flask_app`, follow these steps:
 
-1. **Clone the Repository:**
+1. **Install the Package:**
+
+   ```shell
+   pip install startup-flask-app
+   ```
+
+2. **Clone the Repository:**
 
    ```shell
    git clone https://github.com/ArcadeDesigns/startup_flask_app.git
    ```
 
-2. **Create a Virtual Environment and Activate It:**
+3. **Create a Virtual Environment and Activate It:**
 
    For Linux/Mac:
 
@@ -42,20 +48,20 @@ To get started with `startup_flask_app`, follow these steps:
    venv\Scripts\activate
    ```
 
-3. **Install Dependencies:**
+4. **Install Dependencies:**
 
    ```shell
    pip install -r requirements.txt
    ```
 
-4. **Configure the Flask Environment:**
+5. **Configure the Flask Environment:**
 
    ```shell
    export FLASK_APP=app.py  # For Linux/Mac
    set FLASK_APP=app.py     # For Windows
    ```
 
-5. **Initialize the Database:**
+6. **Initialize the Database:**
 
    ```shell
    flask db init
@@ -63,13 +69,13 @@ To get started with `startup_flask_app`, follow these steps:
    flask db upgrade
    ```
 
-6. **Run the Application:**
+7. **Run the Application:**
 
    ```shell
    flask run
    ```
 
-7. **Access the Application:**
+8. **Access the Application:**
 
    Open your web browser and go to `http://127.0.0.1:5000` to view your running Flask application.
 
@@ -154,3 +160,6 @@ We would like to express our appreciation to the open-source community and Flask
 ---
 
 This README provides comprehensive information about the `startup_flask_app` library, including features, installation instructions, project structure, usage, and more. Please adapt this documentation to your project's specifics, and feel free to expand upon it to meet your project's needs.
+```
+
+I've added a step to install the package, making it clear that it must be installed before running the command.
