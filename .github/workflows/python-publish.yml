@@ -8,6 +8,8 @@ on:
 jobs:
   python-build-n-publish:
     name: Build and publish Python distribution
+    permissions:
+      id-token: write
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -31,8 +33,13 @@ jobs:
         run: python setup.py sdist
 
       - name: Publish distribution to PyPI
-        uses: pypa/gh-action-pypi-publish@release/v1  # Updated to a supported version
+        uses: pypa/gh-action-pypi-publish@release/v1
         with:
-          username: ${{ secrets.PYPI_USERNAME }}
+          user: ${{ secrets.PYPI_USERNAME }}
           password: ${{ secrets.PYPI_PASSWORD }}
-          repository_url: https://upload.pypi.org/legacy/
+          repository-url: https://upload.pypi.org/legacy/
+          packages-dir: dist
+          verify-metadata: true
+          skip-existing: false
+          verbose: false
+          print-hash: false
