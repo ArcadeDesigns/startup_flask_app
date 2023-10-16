@@ -5,7 +5,7 @@ DESCRIPTION = 'Python Flask setup library'
 LONG_DESCRIPTION = 'A package that simplifies the creation of Python Flask applications with a pre-configured project structure.'
 
 setup(
-    name="create_flask_project",
+    name="startup_flask_app",
     version=VERSION,
     author="ArcadeDesigns (Ebire Folayemi Michael)",
     author_email="folayemiebire@gmail.com",
@@ -24,5 +24,5 @@ setup(
         "License :: OSI Approved :: BSD License",
     ],
     
-    entry_points={"console_scripts": ["create_flask_project = src.main:main"]},
+    entry_points={"console_scripts": ["startup_flask_app = src.main:main"]},
 )

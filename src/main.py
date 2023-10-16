@@ -31,7 +31,7 @@ def rename_project(project_name):
         f"Project '{project_name}' has been renamed to '{new_project_name}'.")
 
 
-def create_flask_project():
+def startup_flask_app():
     # Create the project directory
 
     project_name = input("Confirm your project name: ")
@@ -380,7 +380,7 @@ if __name__ == '__main__':
 
 if __name__ == '__main__':
     project_name = input("Enter the project name: ")
-    create_flask_project()
+    startup_flask_app()
     
     # Additional instructions
     print("Your project has been created. To set up and run your Flask project, please follow these steps:")
