@@ -34,7 +34,7 @@ def rename_project(project_name):
 def create_flask_project():
     # Create the project directory
 
-    project_name = input("Enter the project name: ")
+    project_name = input("Confirm your project name: ")
     if os.path.exists(project_name):
         print(
             f"The project directory '{project_name}' already exists. Please choose a different name.")
@@ -304,6 +304,73 @@ db = SQLAlchemy()
 
 """)
 
+    with open(os.path.join(project_name, ".gitignore"), "w") as gitignore_file:
+        gitignore_file.write(""".gitignore
+
+/venv
+packages.py""")
+
+    with open(os.path.join(project_name, "packages.py"), "w") as install_dependencies_files:
+        install_dependencies_files.write("""import os
+import subprocess
+import webbrowser
+
+def activate_and_run_project():
+    # Ensure the 'venv' folder exists
+    if not os.path.exists('venv'):
+        print("Virtual environment 'venv' does not exist. Please create it using 'main.py'.")
+        return
+
+    # Activate the virtual environment (Windows and non-Windows)
+    if os.name == 'nt':
+        venv_activate_cmd = os.path.join("venv", "Scripts", "activate")
+    else:
+        venv_activate_cmd = "source venv/bin/activate"
+    
+    subprocess.call(venv_activate_cmd, shell=True)
+
+    # Install dependencies from requirements.txt
+    subprocess.call("pip install -r requirements.txt", shell=True)
+
+    # Set FLASK_APP environment variable with the full path to app.py
+    app_path = os.path.abspath("app.py")
+    os.environ['FLASK_APP'] = app_path
+
+    while True:
+        print("Select a port to run Flask:")
+        print("1. 5000")
+        print("2. 8000")
+        print("3. 5050")
+        print("4. 8080")
+        print("5. 7000")
+        print("6. 7070")
+        selected_option = input("Choose an option (1/2/3/4/5/6): ").strip()
+        if selected_option in ['1', '2', '3', '4', '5', '6']:
+            break
+        else:
+            print("Invalid option. Please choose a valid option.")
+
+    flask_run_port = {
+        '1': '5000',
+        '2': '8000',
+        '3': '5050',
+        '4': '8080',
+        '5': '7000',
+        '6': '7070'
+    }[selected_option]
+
+    os.environ['FLASK_RUN_PORT'] = flask_run_port
+
+    # Run the Flask application
+    flask_run_cmd = f"flask run --port={flask_run_port}"
+    subprocess.Popen(flask_run_cmd, shell=True)
+
+    webbrowser.open_new_tab(f"http://127.0.0.1:{flask_run_port}")
+
+if __name__ == '__main__':
+    activate_and_run_project()
+""")
+
     # Create requirements.txt file for dependencies
     with open(os.path.join(project_name, "requirements.txt"), "w") as requirements_file:
         requirements_file.write("Flask\nalembic==1.10.2\ncertifi==2022.12.7\ncharset-normalizer==3.1.0\nclick==8.1.3\ncolorama==0.4.6\nFlask==2.2.3\nFlask-CKEditor==0.4.6\nFlask-Login==0.6.2\nFlask-Migrate==4.0.4\nFlask-SQLAlchemy==3.0.3\nFlask-WTF==1.1.1\ngreenlet==2.0.2\nidna==3.4\nimportlib-metadata==6.0.0\nitsdangerous==2.1.2\nJinja2==3.1.2\nMako==1.2.4\nMarkupSafe==2.1.2\npsycopg2-binary==2.9.5\nrequests==2.28.2\nSQLAlchemy==2.0.5.post1\ntyping-extensions==4.5.0\nurllib3==1.26.14\nWerkzeug==2.2.3\nWTForms==3.0.1\nzipp==3.14.0\n")
@@ -311,76 +378,17 @@ db = SQLAlchemy()
     print(
         f"Created Flask project '{project_name}' with the desired structure.")
 
-    project_directory = os.path.abspath(project_name)
-    os.chdir(project_directory)
-
-    # Provide instructions for setting up the virtual environment
-    if create_venv == 'y':
-        print(
-            f"Virtual environment has been created. Activate it using 'source {project_name}/venv/bin/activate' on Linux/Unix, or 'venv\\Scripts\\activate' on Windows.")
-
-        # Set the FLASK_APP environment variable to point to your application
-        os.environ['FLASK_APP'] = f"{project_name}/app.py"
-
-        # Automatically activate the virtual environment (Windows and Unix compatible)
-        if os.name == 'nt':
-            venv_activate_cmd = os.path.join("venv", "Scripts", "activate")
-        else:
-            venv_activate_cmd = f"source venv/bin/activate"
-
-        # Install packages from requirements.txt
-        subprocess.call(f"pip install -r requirements.txt", shell=True)
-
-        # Menu for selecting Flask run port
-        while True:
-            print("Select a port to run Flask:")
-            print("1. 5000")
-            print("2. 8000")
-            print("3. 5050")
-            print("4. 8080")
-            print("5. 7000")
-            print("6. 7070")
-            selected_option = input("Choose an option (1/2/3/4/5/6): ").strip()
-            if selected_option in ['1', '2', '3', '4', '5', '6']:
-                break
-            else:
-                print("Invalid option. Please choose a valid option.")
-
-        flask_run_port = {
-            '1': '5000',
-            '2': '8000',
-            '3': '5050',
-            '4': '8080',
-            '5': '7000',
-            '6': '7070'
-        }[selected_option]
-
-        print(f"Exporting FLASK_RUN_PORT={flask_run_port}")
-        os.environ['FLASK_RUN_PORT'] = flask_run_port
-        print("To start Flask, use the following commands:")
-        print("1. On Linux/Unix:")
-        print(f"   export FLASK_DEBUG=True")
-        print(f"   export FLASK_APP={project_name}/app.py")
-        print(f"   flask run")
-        print("2. On Windows (cmd):")
-        print(f"   set FLASK_DEBUG=True")
-        print(f"   set FLASK_APP={project_name}\\app.py")
-        print(f"   flask run")
-
-        # Automatically activate the virtual environment
-        venv_activate_cmd = os.path.join(
-            project_name, "venv", "Scripts", "activate") if os.name == 'nt' else f"source {project_name}/venv/bin/activate"
-        subprocess.call(venv_activate_cmd, shell=True)
-
-        # Set the FLASK_APP environment variable to point to your application
-        os.environ['FLASK_APP'] = f"{project_name}/app.py"
-
-        # Automatically run the Flask application using the Python interpreter within the virtual environment
-        flask_run_cmd = f"python -m flask run --port={flask_run_port}"
-        subprocess.Popen(flask_run_cmd, shell=True)
-
-        # Open the default web browser
-        webbrowser.open_new_tab("http://127.0.0.1:" + flask_run_port)
-
 if __name__ == '__main__':
+    project_name = input("Enter the project name: ")
     create_flask_project()
+    
+    # Additional instructions
+    print("Your project has been created. To set up and run your Flask project, please follow these steps:")
+    print("1. Navigate to your created project folder.")
+    print("2. Activate your virtual environment using the following commands:")
+    print("   - For Bash: source venv/Scripts/activate")
+    print("   - For Command Prompt (Windows): venv\\Scripts\\activate")
+    print("3. Once the virtual environment is activated, run the following command to install dependencies and run your Flask app:")
+    print("   - cd <Project Name>")
+    print("   - Start your venv")
+    print("   - run 'python packages.py' to start the application")
