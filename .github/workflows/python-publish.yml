@@ -37,6 +37,7 @@ jobs:
         with:
           user: ${{ secrets.PYPI_USERNAME }}
           password: ${{ secrets.PYPI_PASSWORD }}
+          token: ${{ secrets.PYPI_API_TOKEN }}
           repository-url: https://upload.pypi.org/legacy/
           packages-dir: dist
           verify-metadata: true
