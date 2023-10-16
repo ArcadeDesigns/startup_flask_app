@@ -11,6 +11,8 @@ jobs:
     permissions:
       id-token: write
     runs-on: ubuntu-latest
+    environment:
+      name: release  # Specify the environment name here
     steps:
       - uses: actions/checkout@v2
 
