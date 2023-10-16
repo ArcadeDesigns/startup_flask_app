@@ -1,6 +1,6 @@
 from setuptools import setup, find_packages
 
-VERSION = '0.0.2'
+VERSION = '1.0.1'
 DESCRIPTION = 'Python Flask setup library'
 LONG_DESCRIPTION = 'A package that simplifies the creation of Python Flask applications with a pre-configured project structure.'
 
