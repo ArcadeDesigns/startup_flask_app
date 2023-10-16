@@ -38,8 +38,8 @@ jobs:
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           user: ${{ secrets.PYPI_USERNAME }}
-          password: ${{ secrets.PYPI_PASSWORD }}  # Use this line if you want to use a password
-          # token: ${{ secrets.PYPI_API_TOKEN }}    # Use this line if you want to use an API token
+          password: ${{ secrets.PYPI_PASSWORD }}
+          token: ${{ secrets.PYPI_SECRET_TOKEN }}
           repository-url: https://upload.pypi.org/legacy/
           packages-dir: dist
           verify-metadata: true
