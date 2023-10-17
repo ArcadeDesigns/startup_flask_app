@@ -1,12 +1,12 @@
 [project]
 name = "startup_flask_app"
-version = "3.0.1"
+version = "4.0.1"
 authors = [
   { name="Ebire Folayemi", email="folayemiebire@gmail.com" },
 ]
 description = "A small example package"
 readme = "README.md"
-requires-python = ">=3.11"
+requires-python = ">=3.7"
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: BSD License",
