@@ -1,6 +1,6 @@
 [project]
 name = "startup_flask_app"
-version = "6.0.1"
+version = "5.2.1"
 authors = [
   { name="Ebire Folayemi", email="folayemiebire@gmail.com" },
 ]
