@@ -3,7 +3,7 @@ name: Publish Python distributions to PyPI and TestPyPI
 on:
   push:
     branches:
-      - main  # Replace with your branch name
+      - main
 
 jobs:
   python-build-n-publish:
@@ -12,7 +12,7 @@ jobs:
       id-token: write
     runs-on: ubuntu-latest
     environment:
-      name: release  # Specify the environment name here
+      name: release
     steps:
       - uses: actions/checkout@v2
 

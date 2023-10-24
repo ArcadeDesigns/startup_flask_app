@@ -32,47 +32,33 @@ To get started with `startup_flask_app`, follow these steps:
    git clone https://github.com/ArcadeDesigns/startup_flask_app.git
    ```
 
-3. **Create a Virtual Environment and Activate It:**
+3. **After pip install start-flask-app**
 
-   For Linux/Mac:
+   Run package with
 
    ```shell
-   python -m venv venv
-   source venv/bin/activate
+   startup_flask_app
    ```
 
    For Windows:
 
    ```shell
-   python -m venv venv
-   venv\Scripts\activate
+   startup_flask_app
    ```
 
-4. **Install Dependencies:**
+4. **Create Database:**
 
    ```shell
-   pip install -r requirements.txt
+   python create_db.py
+   ```
    ```
 
-5. **Configure the Flask Environment:**
-
-   ```shell
-   export FLASK_APP=app.py  # For Linux/Mac
-   set FLASK_APP=app.py     # For Windows
-   ```
-
-6. **Initialize the Database:**
+5. **Initialize the Database:**
 
    ```shell
    flask db init
    flask db migrate
    flask db upgrade
-   ```
-
-7. **Run the Application:**
-
-   ```shell
-   flask run
    ```
 
 8. **Access the Application:**
@@ -140,26 +126,3 @@ This project is licensed under the [BSD License](LICENSE).
 - Flask
 - Web Application
 - Full-Stack Development
-
-## Contribution
-
-We welcome contributions from the community. If you would like to contribute to this project, please review the [CONTRIBUTING.md](CONTRIBUTING.md) file for guidelines.
-
-## Issue Tracker
-
-If you encounter any issues or have suggestions for improvements, please report them on the [GitHub issue tracker](https://github.com/ArcadeDesigns/startup_flask_app/issues).
-
-## Changelog
-
-See the [CHANGELOG.md](CHANGELOG.md) file for a history of changes to this project.
-
-## Acknowledgments
-
-We would like to express our appreciation to the open-source community and Flask developers for their valuable contributions.
-
----
-
-This README provides comprehensive information about the `startup_flask_app` library, including features, installation instructions, project structure, usage, and more. Please adapt this documentation to your project's specifics, and feel free to expand upon it to meet your project's needs.
-```
-
-I've added a step to install the package, making it clear that it must be installed before running the command.
