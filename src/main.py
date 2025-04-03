@@ -24,15 +24,11 @@ def rename_project(project_name):
         print("Invalid option. Please choose a valid option (1/2/3).")
         return
 
-    # Rename the project directory
     os.rename(project_name, new_project_name)
     print(
         f"Project '{project_name}' has been renamed to '{new_project_name}'.")
 
-
 def startup_flask_app():
-    # Create the project directory
-
     project_name = input("Confirm your project name: ")
     if os.path.exists(project_name):
         print(
@@ -41,20 +37,12 @@ def startup_flask_app():
 
     os.makedirs(project_name)
 
-    # Option to include a virtual environment
-    create_venv = input(
-        "Create a virtual environment for the project? (y/n): ").strip().lower()
-    if create_venv == 'y':
-        os.system(f"python -m venv {project_name}/venv")
-
-    # Create static folder and subfolders
     static_path = os.path.join(project_name, "static")
     os.makedirs(static_path)
     os.makedirs(os.path.join(static_path, "css"))
     os.makedirs(os.path.join(static_path, "img"))
     os.makedirs(os.path.join(static_path, "js"))
 
-    # Create template folder and HTML files
     template_path = os.path.join(project_name, "templates")
     os.makedirs(template_path)
 
@@ -88,7 +76,7 @@ def startup_flask_app():
 </main>
 
 <footer class="footer">
-    <p>&copy; <span id="year"></span> {{ project_name }}</p>
+    <p>&copy; <span id="year"></span>{{ project_name }}</p>
 </footer>""")
 
     with open(os.path.join(template_path, "base.html"), "w") as base_file:
@@ -218,8 +206,6 @@ class UserForm(FlaskForm):
     name = StringField(validators=[DataRequired()])
     username = StringField(validators=[DataRequired()])
     email = StringField(validators=[DataRequired()])
-    bio_summary = StringField()
-    location = StringField()
     facebook_account = StringField()
     twitter_account = StringField()
     instagram_account = StringField()
@@ -240,26 +226,18 @@ class Users(db.Model, UserMixin):
     name = db.Column(db.String(), nullable=False)
     username = db.Column(db.String(), nullable=False, unique=True)
     email = db.Column(db.String(), nullable=False, unique=True)
-    bio_summary = db.Column(db.Text(), nullable=True)
     profile_pic = db.Column(db.String(), nullable=True)
     password_hash = db.Column(db.String())
-
-    location = db.Column(db.Text(), nullable=True)
     facebook_account = db.Column(db.Text(), nullable=True)
     twitter_account = db.Column(db.Text(), nullable=True)
     instagram_account = db.Column(db.Text(), nullable=True)
-    
     date_added = db.Column(db.DateTime, default=datetime.utcnow)
-
     def formatted_date(self):
         return self.date_added.strftime("%B %Y")
-
     def formatted_date_with_day(self):
         return self.date_added.strftime("%d %B %Y")
-
     def formatted_time(self):
         return self.date_added.strftime("%I:%M %p").lstrip('0')
-
     def time_since_posted(self):
         time_diff = datetime.now() - self.date_added
         hours, remainder = divmod(time_diff.seconds, 3600)

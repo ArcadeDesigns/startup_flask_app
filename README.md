@@ -1,4 +1,4 @@
-# startup_flask_app
+# Start Flask  App
 
 ## Overview
 
@@ -50,7 +50,6 @@ To get started with `startup_flask_app`, follow these steps:
 
    ```shell
    python create_db.py
-   ```
    ```
 
 5. **Initialize the Database:**
